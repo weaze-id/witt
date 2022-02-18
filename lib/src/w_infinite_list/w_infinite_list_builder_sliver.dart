@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'infinite_list_state.dart';
+import 'w_infinite_list_state.dart';
 
 /// Create a list view builder for lazy loading list from API.
-class InfiniteListBuilderSliver extends StatefulWidget {
-  const InfiniteListBuilderSliver({
+class WInfiniteListBuilderSliver extends StatefulWidget {
+  const WInfiniteListBuilderSliver({
     Key? key,
     required this.state,
     required this.onLoad,
@@ -21,10 +21,10 @@ class InfiniteListBuilderSliver extends StatefulWidget {
   }) : super(key: key);
 
   /// Define current state.
-  final InfiniteListState state;
+  final WInfiniteListState state;
 
   /// Callback when user scroll to the end of list and the state
-  /// is [InfiniteListState.idle].
+  /// is [WInfiniteListState.idle].
   final Future<void> Function() onLoad;
 
   /// The [itemBuilder] callback will be called only with indices greater than
@@ -35,13 +35,13 @@ class InfiniteListBuilderSliver extends StatefulWidget {
   /// to estimate the maximum scroll extent.
   final int itemCount;
 
-  /// A widget to show if the state is [InfiniteListState.initialLoading].
+  /// A widget to show if the state is [WInfiniteListState.initialLoading].
   final Widget? loadingBuilder;
 
-  /// A widget to show if the state is [InfiniteListState.noInternet].
+  /// A widget to show if the state is [WInfiniteListState.noInternet].
   final Widget? noInternetMessageBuilder;
 
-  /// A widget to show if the state is [InfiniteListState.empty].
+  /// A widget to show if the state is [WInfiniteListState.empty].
   final Widget? emptyMessageBuilder;
 
   /// A string to show as [EmptyMessage] title.
@@ -57,18 +57,19 @@ class InfiniteListBuilderSliver extends StatefulWidget {
   final void Function()? onEmptyButtonPressed;
 
   @override
-  State<InfiniteListBuilderSliver> createState() =>
-      _InfiniteListBuilderSliverState();
+  State<WInfiniteListBuilderSliver> createState() =>
+      _WInfiniteListBuilderSliverState();
 }
 
-class _InfiniteListBuilderSliverState extends State<InfiniteListBuilderSliver> {
+class _WInfiniteListBuilderSliverState
+    extends State<WInfiniteListBuilderSliver> {
   bool _isLoading = false;
 
   /// Item builder for [ListView.builder].
   Widget _itemBuilder(context, index) {
     // If [widget.state] is idle and current index is greater than [itemCount],
     // show [CupertinoActivityIndicator].
-    if (widget.state == InfiniteListState.idle &&
+    if (widget.state == WInfiniteListState.idle &&
         index > widget.itemCount - 1) {
       // Call onLoad when _isLoading is false.
       if (!_isLoading) {
@@ -84,18 +85,18 @@ class _InfiniteListBuilderSliverState extends State<InfiniteListBuilderSliver> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.state == InfiniteListState.initialLoading) {
+    if (widget.state == WInfiniteListState.initialLoading) {
       return SliverToBoxAdapter(
           child: widget.loadingBuilder ??
               const Center(child: CupertinoActivityIndicator()));
     }
 
-    if (widget.state == InfiniteListState.noInternet) {
+    if (widget.state == WInfiniteListState.noInternet) {
       return SliverToBoxAdapter(
           child: widget.noInternetMessageBuilder ?? const SizedBox());
     }
 
-    if (widget.state == InfiniteListState.empty) {
+    if (widget.state == WInfiniteListState.empty) {
       return SliverToBoxAdapter(
           child: widget.emptyMessageBuilder ?? const SizedBox());
     }
@@ -103,8 +104,8 @@ class _InfiniteListBuilderSliverState extends State<InfiniteListBuilderSliver> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         _itemBuilder,
-        childCount:
-            widget.itemCount + (widget.state == InfiniteListState.idle ? 1 : 0),
+        childCount: widget.itemCount +
+            (widget.state == WInfiniteListState.idle ? 1 : 0),
       ),
     );
   }
