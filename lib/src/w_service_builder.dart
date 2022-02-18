@@ -12,7 +12,7 @@ class WServiceBuilder extends StatefulWidget {
   }) : super(key: key);
 
   /// A function for registering services.
-  final void Function() serviceBuilder;
+  final void Function(GetIt getIt) serviceBuilder;
 
   /// A function called before [GetIt] pushed.
   final void Function()? onWillPush;
@@ -31,9 +31,7 @@ class _WServiceBuilderState extends State<WServiceBuilder> {
   @override
   void initState() {
     widget.onWillPush?.call();
-    GetIt.I.pushNewScope();
-    widget.serviceBuilder();
-
+    GetIt.I.pushNewScope(init: widget.serviceBuilder);
     super.initState();
   }
 
