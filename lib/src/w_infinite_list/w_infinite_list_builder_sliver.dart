@@ -14,10 +14,6 @@ class WInfiniteListBuilderSliver extends StatefulWidget {
     this.loadingBuilder,
     this.noInternetMessageBuilder,
     this.emptyMessageBuilder,
-    this.emptyTitle,
-    this.emptyMessage,
-    this.emptyButtonLabel,
-    this.onEmptyButtonPressed,
   }) : super(key: key);
 
   /// Define current state.
@@ -43,18 +39,6 @@ class WInfiniteListBuilderSliver extends StatefulWidget {
 
   /// A widget to show if the state is [WInfiniteListState.empty].
   final Widget? emptyMessageBuilder;
-
-  /// A string to show as [EmptyMessage] title.
-  final String? emptyTitle;
-
-  /// A string to show as [EmptyMessage] message.
-  final String? emptyMessage;
-
-  /// A string to show as [EmptyMessage] button label.
-  final String? emptyButtonLabel;
-
-  /// A callback when user pressed [EmptyMessage] button.
-  final void Function()? onEmptyButtonPressed;
 
   @override
   State<WInfiniteListBuilderSliver> createState() =>
