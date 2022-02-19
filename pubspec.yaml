@@ -1,5 +1,5 @@
 name: we_it
-description: Core library, powered by get_it and value_notifier.
+description: Simple state manager using value_notifier.
 version: 0.0.1
 homepage:
 
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:

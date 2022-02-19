@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
+
+import 'w_service.dart';
 
 /// Automatically push and pop [GetIt] scope.
 class WServiceBuilder extends StatefulWidget {
@@ -12,7 +13,7 @@ class WServiceBuilder extends StatefulWidget {
   }) : super(key: key);
 
   /// A function for registering services.
-  final void Function(GetIt getIt) serviceBuilder;
+  final void Function(BuildContext context) serviceBuilder;
 
   /// A function called before [GetIt] pushed.
   final void Function()? onWillPush;
@@ -31,14 +32,17 @@ class _WServiceBuilderState extends State<WServiceBuilder> {
   @override
   void initState() {
     widget.onWillPush?.call();
-    GetIt.I.pushNewScope(init: widget.serviceBuilder);
+    WService.pushScope();
+    widget.serviceBuilder.call(context);
+
     super.initState();
   }
 
   @override
   void dispose() {
     widget.onWillPop?.call();
-    GetIt.I.popScope();
+    WService.popScope();
+
     super.dispose();
   }
 
