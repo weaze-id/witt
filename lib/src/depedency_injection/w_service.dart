@@ -1,9 +1,13 @@
 import 'package:collection/collection.dart';
 
 class _Scope {
+  String? name;
   final List<_Service<Object>> services;
 
-  _Scope({required this.services});
+  _Scope({
+    this.name,
+    required this.services,
+  });
 }
 
 class _Service<T extends Object> {
@@ -30,7 +34,7 @@ class WService {
     final scopes = _scopes.reversed;
     for (final scope in scopes) {
       final registeredService =
-          scope.services.where((e) => e.object.runtimeType == T).firstOrNull;
+          scope.services.where((e) => e.object is T).firstOrNull;
 
       if (registeredService != null) {
         return registeredService.object as T;
@@ -39,8 +43,8 @@ class WService {
   }
 
   /// Push a new scope.
-  static void pushScope() {
-    _scopes.add(_Scope(services: []));
+  static void pushScope({String? scopeName}) {
+    _scopes.add(_Scope(name: scopeName, services: []));
   }
 
   /// Register a singleton service.
@@ -53,15 +57,28 @@ class WService {
   }
 
   /// Register a singleton service.
+  static void popScopeNamed(String scopeName) {
+    if (_scopes.isEmpty) {
+      throw Exception("Scope is empty");
+    }
+
+    for (int i = _scopes.length - 1; i >= 0; i--) {
+      final scope = _scopes[i];
+      if (scope.name == scopeName) {
+        _scopes.removeAt(i);
+        return;
+      }
+    }
+  }
+
+  /// Register a singleton service.
   static void addSingleton<T extends Object>(T Function() builder) {
     _initializeScope();
 
     /// Get last scope and check if service already registered.
     final lastScope = _scopes.last;
-    final isRegisteredOnLastScope = lastScope.services
-            .where((e) => e.object.runtimeType == T)
-            .firstOrNull !=
-        null;
+    final isRegisteredOnLastScope =
+        lastScope.services.where((e) => e.object is T).firstOrNull != null;
 
     if (isRegisteredOnLastScope) {
       throw Exception(
@@ -85,7 +102,7 @@ class WService {
     if (registeredService == null) {
       throw Exception(
           "$T is not registered, Make sure you have register the $T by calling "
-          "WService.addSingleton(() => <$T>())");
+          "WService.addSingleton(() => $T())");
     }
 
     return registeredService;

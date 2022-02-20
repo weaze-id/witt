@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 
 import 'w_service.dart';
@@ -29,10 +31,14 @@ class WServiceBuilder extends StatefulWidget {
 }
 
 class _WServiceBuilderState extends State<WServiceBuilder> {
+  late final String scopeName;
+
   @override
   void initState() {
+    scopeName = _generateScopeName();
+
     widget.onWillPush?.call();
-    WService.pushScope();
+    WService.pushScope(scopeName: scopeName);
     widget.serviceBuilder.call(context);
 
     super.initState();
@@ -41,9 +47,15 @@ class _WServiceBuilderState extends State<WServiceBuilder> {
   @override
   void dispose() {
     widget.onWillPop?.call();
-    WService.popScope();
+    WService.popScopeNamed(scopeName);
 
     super.dispose();
+  }
+
+  String _generateScopeName() {
+    var r = Random();
+    return String.fromCharCodes(
+        List.generate(5, (index) => r.nextInt(33) + 89));
   }
 
   @override
