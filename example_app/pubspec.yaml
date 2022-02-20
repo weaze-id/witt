@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  we_it:
+  witt:
     path: "../"
 
 dev_dependencies:

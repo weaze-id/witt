@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:we_it/we_it.dart';
+import 'package:witt/witt.dart';
 
 void main() {
   WService.addSingleton(() => HomePageController());
