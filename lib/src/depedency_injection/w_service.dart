@@ -47,7 +47,7 @@ class WService {
     _scopes.add(_Scope(name: scopeName, services: []));
   }
 
-  /// Register a singleton service.
+  /// Pop last scope.
   static void popScope() {
     if (_scopes.isEmpty) {
       throw Exception("Scope is empty");
@@ -56,7 +56,7 @@ class WService {
     _scopes.removeLast();
   }
 
-  /// Register a singleton service.
+  /// Pop last matches scope name.
   static void popScopeNamed(String scopeName) {
     if (_scopes.isEmpty) {
       throw Exception("Scope is empty");

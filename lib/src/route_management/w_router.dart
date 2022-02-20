@@ -8,6 +8,11 @@ class WRouter {
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   /// Push the given route onto the navigator.
+  Future<T?> push<T extends Object?>(Route<T> route) {
+    return navigatorKey.currentState!.push(route);
+  }
+
+  /// Push the given route onto the navigator.
   static Future<T?> pushCupertinoPage<T>({
     required Widget Function(BuildContext) builder,
     String? title,
@@ -49,7 +54,7 @@ class WRouter {
 
   /// Push the given route onto the navigator.
   static void pop<T extends Object?>([T? result]) {
-    return navigatorKey.currentState!.pop();
+    navigatorKey.currentState!.pop();
   }
 
   /// Pop the current route off the navigator and push a named route in its
@@ -65,6 +70,22 @@ class WRouter {
 
   /// Calls [pop] repeatedly until the predicate returns true.
   static void popUntil(bool Function(Route<dynamic>) predicate) {
-    return navigatorKey.currentState!.popUntil(predicate);
+    navigatorKey.currentState!.popUntil(predicate);
+  }
+
+  /// Calls [pop] repeatedly until the predicate returns true and push a
+  /// named route.
+  static Future<T?> popUntilAndPushNamed<T extends Object?, TO extends Object?>(
+    bool Function(Route<dynamic>) predicate,
+    String routeName, {
+    TO? result,
+    Object? arguments,
+  }) {
+    popUntil(predicate);
+    return popAndPushNamed(
+      routeName,
+      result: result,
+      arguments: arguments,
+    );
   }
 }
