@@ -34,11 +34,11 @@ final counter = ValueNotifier(0);
 
 // or
 class CounterController {
-    final counter = ValueNotifier(0);
+  final counter = ValueNotifier(0);
 
-    void incrementCounter() {
-        counter.value++;
-    }
+  void incrementCounter() {
+    counter.value++;
+  }
 }
 ```
 
@@ -46,14 +46,14 @@ Listen to value change by using `WListener` or `WMultiListener`
 
 ```dart
 WListener(
-    notifier: CounterController.counter,
-    builder: (context) => Text(CounterController.counter.value.toString()),
+  notifier: CounterController.counter,
+  builder: (context) => Text(CounterController.counter.value.toString()),
 );
 
 // or
 WMultiListener(
-    notifiers: [CounterController.counter],
-    builder: (context) => Text(CounterController.counter.value.toString()),
+  notifiers: [CounterController.counter],
+  builder: (context) => Text(CounterController.counter.value.toString()),
 );
 ```
 
@@ -77,8 +77,8 @@ By wrapping page/widget using `WServiceBuilder`, your object will be automatical
 
 ```dart
 WServiceBuilder(
-    serviceBuilder: () {},
-    child: HomePage(),
+  serviceBuilder: () {},
+  child: HomePage(),
 );
 ```
 
@@ -86,10 +86,10 @@ Register the object on `serviceBuilder` property
 
 ```dart
 WServiceBuilder(
-    serviceBuilder: () {
-        WService.addSingleton(() => CounterController());
-    },
-    child: HomePage(),
+  serviceBuilder: () {
+    WService.addSingleton(() => CounterController());
+  },
+  child: HomePage(),
 );
 ```
 
@@ -121,9 +121,9 @@ Register `WRouter.navigatorKey` on `MaterialApp` or `CupertinoApp`
 
 ```dart
 return MaterialApp(
-    navigatorKey: WRouter.navigatorKey,
-    title: "My Awesome App",
-    home: const HomePage(),
+  navigatorKey: WRouter.navigatorKey,
+  title: "My Awesome App",
+  home: const HomePage(),
 );
 ```
 
@@ -131,10 +131,10 @@ Navigate
 
 ```dart
 WRouter.pushMaterialPage(
-    builder: (context) => WServiceBuilder(
+  builder: (context) => WServiceBuilder(
     serviceBuilder: (context) {},
     child: const SecondPage(),
-    ),
+  ),
 );
 
 // or using named route
@@ -160,27 +160,27 @@ class CounterController {
 ```dart
 // Register your business logic before runApp function.
 void main() {
-    WService.addSingleton(() => HomePageController());
-    runApp(const MyApp());
+  WService.addSingleton(() => HomePageController());
+  runApp(const MyApp());
 }
 
 // Or you can register your business logic using `WServiceBuilder`
 class MyApp extends StatelessWidget {
-    const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
-    // This widget is the root of your application.
-    @override
-    Widget build(BuildContext context) {
-        return MaterialApp(
-            title: "Example App",
-            home: WServiceBuilder(
-                serviceBuilder: (context) {
-                    WService.addSingleton(() => HomePageController());
-                },
-                child: const HomePage(),
-            ),
-        );
-    }
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Example App",
+      home: WServiceBuilder(
+        serviceBuilder: (context) {
+          WService.addSingleton(() => CounterController());
+        },
+        child: const HomePage(),
+      ),
+    );
+  }
 }
 ```
 
@@ -194,20 +194,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get CounterController instance from depedency injection.
     final counterC = WService.get<CounterController>();
-    return  Scaffold(
-        appBar: AppBar(title: const Text("Counter App")),
-        body: Center(
-            // Listen to ValueNotifier.
-            child: WListener(
-                notifier: counterC.counter,
-                builder: (context) =>  Text(counterC.counter.value.toString()),
-            ),
+    return Scaffold(
+      appBar: AppBar(title: const Text("Counter App")),
+      body: Center(
+        // Listen to ValueNotifier.
+        child: WListener(
+          notifier: counterC.counter,
+          builder: (context) => Text(counterC.counter.value.toString()),
         ),
-        floatingActionButton: FloationActionButton(
-            // Increment the counter.
-            onPressed: counterC.incrementCounter,
-            child: const Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // Increment the counter.
+        onPressed: counterC.incrementCounter,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
