@@ -219,7 +219,7 @@ The main idea of ​​this library being created is to manage state, dependency
 
 ## Additional Information
 
-This library is currenctly on experimental status and not ready for production. The API may change slightly when more features are added, and some use-cases may not be as simple as they could be.
+This library is currently on experimental status and not ready for production. The API may change slightly when more features are added, and some use-cases may not be as simple as they could be.
 
 ## Contributing
 
