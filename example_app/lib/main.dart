@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:witt/witt.dart';
 
 void main() {
+  WService.enableLog = true;
   WService.addLazySingleton(() => HomePageController());
   runApp(const MyApp());
 }

@@ -121,10 +121,9 @@ class WService {
 
     /// Get last scope and check if service already registered.
     final lastScope = _scopes.last;
-    final isRegisteredOnLastScope = lastScope.services
-            .where((e) => e.instanceType == T.runtimeType)
-            .firstOrNull !=
-        null;
+    final isRegisteredOnLastScope =
+        lastScope.services.where((e) => e.instanceType == T).firstOrNull !=
+            null;
 
     if (isRegisteredOnLastScope) {
       throw Exception(
