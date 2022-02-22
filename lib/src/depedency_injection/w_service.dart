@@ -108,6 +108,8 @@ class WService {
         return scope.services[serviceIndex].instance as T;
       }
     }
+
+    return null;
   }
 
   /// Register a service to _scopes.
