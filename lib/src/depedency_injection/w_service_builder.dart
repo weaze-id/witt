@@ -47,7 +47,7 @@ class _WServiceBuilderState extends State<WServiceBuilder> {
   @override
   void dispose() {
     widget.onWillPop?.call();
-    WService.popScopeNamed(scopeName);
+    WService.popScope(scopeName: scopeName);
 
     super.dispose();
   }

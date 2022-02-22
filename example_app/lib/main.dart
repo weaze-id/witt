@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:witt/witt.dart';
 
 void main() {
-  WService.addSingleton(() => HomePageController());
+  WService.addLazySingleton(() => HomePageController());
   runApp(const MyApp());
 }
 
@@ -34,7 +34,8 @@ class HomePage extends StatelessWidget {
   void _navigate() {
     WRouter.pushMaterialPage(
       builder: (context) => WServiceBuilder(
-        serviceBuilder: (context) {},
+        serviceBuilder: (context) =>
+            WService.addLazySingleton(() => HomePageController()),
         child: const HomePage(),
       ),
     );
