@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../depedency_injection/w_service_builder.dart';
+import 'w_page.dart';
+
 /// Manipulate route without using [BuildContext],
 /// [navigatorKey] must be registered at [MaterialApp].
 class WRouter {
@@ -78,14 +81,63 @@ class WRouter {
   static Future<T?> popUntilAndPushNamed<T extends Object?, TO extends Object?>(
     bool Function(Route<dynamic>) predicate,
     String routeName, {
-    TO? result,
     Object? arguments,
   }) {
     popUntil(predicate);
-    return popAndPushNamed(
-      routeName,
-      result: result,
-      arguments: arguments,
-    );
+    return pushNamed(routeName, arguments: arguments);
+  }
+
+  /// Calls [pop] repeatedly until all route popped and push a
+  /// named route.
+  static Future<T?> popAllAndPushNamed<T extends Object?, TO extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) {
+    return popUntilAndPushNamed((route) => false, routeName,
+        arguments: arguments);
+  }
+
+  /// Generate material page route.
+  static Route<dynamic>? onGenerateMaterialRoute({
+    required RouteSettings settings,
+    required List<WPage> pages,
+  }) {
+    for (final page in pages) {
+      if (settings.name == page.path) {
+        return MaterialPageRoute(
+          builder: (context) => page.serviceBuilder != null
+              ? WServiceBuilder(
+                  serviceBuilder: page.serviceBuilder!,
+                  child: page.builder(context, settings.arguments),
+                )
+              : page.builder(context, settings.arguments),
+          settings: settings,
+        );
+      }
+    }
+
+    return null;
+  }
+
+  /// Generate cupertino page route.
+  static Route<dynamic>? onGenerateCupertinoRoute({
+    required RouteSettings settings,
+    required List<WPage> pages,
+  }) {
+    for (final page in pages) {
+      if (settings.name == page.path) {
+        return CupertinoPageRoute(
+          builder: (context) => page.serviceBuilder != null
+              ? WServiceBuilder(
+                  serviceBuilder: page.serviceBuilder!,
+                  child: page.builder(context, settings.arguments),
+                )
+              : page.builder(context, settings.arguments),
+          settings: settings,
+        );
+      }
+    }
+
+    return null;
   }
 }
