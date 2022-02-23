@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:witt/witt.dart';
 
-class HomePageController extends WDisposable {
+class HomePageController {
   HomePageController() {
     counter.value++;
   }
@@ -10,15 +9,5 @@ class HomePageController extends WDisposable {
 
   void incrementCounter() {
     counter.value++;
-  }
-
-  @override
-  void initialize() {
-    print("on init");
-  }
-
-  @override
-  void dispose() {
-    print("on dispose");
   }
 }
