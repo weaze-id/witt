@@ -10,8 +10,20 @@ class WRouter {
   /// A navigator key.
   static final navigatorKey = GlobalKey<NavigatorState>();
 
+  /// A navigator key for nested navigation.
+  static final _nestedKeys = Map<String, GlobalKey<NavigatorState>>();
+
+  /// Add nested key.
+  static GlobalKey<NavigatorState> addNestedKey(String label) {
+    if (!_nestedKeys.containsKey(label)) {
+      _nestedKeys.addAll({label: GlobalKey<NavigatorState>()});
+    }
+
+    return _nestedKeys[label]!;
+  }
+
   /// Push the given route onto the navigator.
-  Future<T?> push<T extends Object?>(Route<T> route) {
+  static Future<T?> push<T extends Object?>(Route<T> route) {
     return navigatorKey.currentState!.push(route);
   }
 
@@ -48,16 +60,22 @@ class WRouter {
   }
 
   /// Push the given route onto the navigator.
-  static Future<T?> pushNamed<T>(String routeName, {Object? arguments}) {
-    return navigatorKey.currentState!.pushNamed(
-      routeName,
-      arguments: arguments,
-    );
+  static Future<T?> pushNamed<T>(
+    String routeName, {
+    Object? arguments,
+    String? keyLabel,
+  }) {
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    return key!.currentState!.pushNamed(routeName, arguments: arguments);
   }
 
   /// Push the given route onto the navigator.
-  static void pop<T extends Object?>([T? result]) {
-    navigatorKey.currentState!.pop();
+  static void pop<T extends Object?>({
+    T? result,
+    String? keyLabel,
+  }) {
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    key!.currentState!.pop();
   }
 
   /// Pop the current route off the navigator and push a named route in its
@@ -66,35 +84,60 @@ class WRouter {
     String routeName, {
     TO? result,
     Object? arguments,
+    String? keyLabel,
   }) {
-    return navigatorKey.currentState!
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    return key!.currentState!
         .popAndPushNamed(routeName, result: result, arguments: arguments);
   }
 
+  /// Replace the current route of the navigator by pushing the route
+  /// named [routeName] and then disposing the previous route once the
+  /// new route has finished animating in.
+  static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+    String routeName, {
+    TO? result,
+    Object? arguments,
+    String? keyLabel,
+  }) {
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    return key!.currentState!
+        .pushReplacementNamed(routeName, result: result, arguments: arguments);
+  }
+
   /// Calls [pop] repeatedly until the predicate returns true.
-  static void popUntil(bool Function(Route<dynamic>) predicate) {
-    navigatorKey.currentState!.popUntil(predicate);
+  static void popUntil(
+    bool Function(Route<dynamic>) predicate, {
+    String? keyLabel,
+  }) {
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    key!.currentState!.popUntil(predicate);
   }
 
-  /// Calls [pop] repeatedly until the predicate returns true and push a
-  /// named route.
-  static Future<T?> popUntilAndPushNamed<T extends Object?, TO extends Object?>(
-    bool Function(Route<dynamic>) predicate,
-    String routeName, {
+  /// Push the route with the given name onto the navigator, and then remove
+  /// all the previous routes until the predicate returns true.
+  static Future<T?>
+      pushNamedAndRemoveUntil<T extends Object?, TO extends Object?>(
+    String newRouteName,
+    bool Function(Route<dynamic>) predicate, {
     Object? arguments,
+    String? keyLabel,
   }) {
-    popUntil(predicate);
-    return pushNamed(routeName, arguments: arguments);
+    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    return key!.currentState!
+        .pushNamedAndRemoveUntil(newRouteName, predicate, arguments: arguments);
   }
 
-  /// Calls [pop] repeatedly until all route popped and push a
-  /// named route.
-  static Future<T?> popAllAndPushNamed<T extends Object?, TO extends Object?>(
+  /// Push the route with the given name onto the navigator, and then remove
+  /// all the previous routes.
+  static Future<T?>
+      pushNamedAndRemoveAll<T extends Object?, TO extends Object?>(
     String routeName, {
     Object? arguments,
+    String? keyLabel,
   }) {
-    return popUntilAndPushNamed((route) => false, routeName,
-        arguments: arguments);
+    return pushNamedAndRemoveUntil(routeName, (route) => false,
+        arguments: arguments, keyLabel: keyLabel);
   }
 
   /// Generate material page route.
