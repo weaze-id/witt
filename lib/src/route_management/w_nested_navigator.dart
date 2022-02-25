@@ -43,7 +43,7 @@ class _RouteObserver extends RouteObserver<PageRoute<dynamic>> {
 class WNestedNavigator extends StatelessWidget {
   const WNestedNavigator({
     Key? key,
-    required this.keyLabel,
+    required this.nestedKeyLabel,
     this.initialRoute,
     this.onGenerateInitialRoutes = Navigator.defaultGenerateInitialRoutes,
     this.onGenerateRoute,
@@ -53,7 +53,7 @@ class WNestedNavigator extends StatelessWidget {
   }) : super(key: key);
 
   /// Used for [WRouter.addNestedKey(label)].
-  final String keyLabel;
+  final String nestedKeyLabel;
 
   /// The name of the first route to show.
   final String? initialRoute;
@@ -79,7 +79,7 @@ class WNestedNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      key: WRouter.addNestedKey(keyLabel),
+      key: WRouter.addNestedKey(nestedKeyLabel),
       observers: [_RouteObserver(onRouteChanged: onRouteChanged)],
       initialRoute: initialRoute,
       onGenerateInitialRoutes: onGenerateInitialRoutes,

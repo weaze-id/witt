@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   void _navigate(String routeName) {
     final homePageC = WService.get<HomePageController>();
     if (homePageC.currentRouteName != routeName) {
-      WRouter.pushReplacementNamed(routeName, keyLabel: "main");
+      WRouter.pushReplacementNamed(routeName, nestedKeyLabel: "main");
     }
   }
 
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             flex: 3,
             child: WNestedNavigator(
-              keyLabel: "main",
+              nestedKeyLabel: "main",
               initialRoute: "/page-1",
               onRouteChanged: (routeName) =>
                   homePageC.currentRouteName = routeName,

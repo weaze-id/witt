@@ -68,18 +68,20 @@ class WRouter {
   static Future<T?> pushNamed<T>(
     String routeName, {
     Object? arguments,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     return key!.currentState!.pushNamed(routeName, arguments: arguments);
   }
 
   /// Push the given route onto the navigator.
   static void pop<T extends Object?>({
     T? result,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     key!.currentState!.pop();
   }
 
@@ -89,9 +91,10 @@ class WRouter {
     String routeName, {
     TO? result,
     Object? arguments,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     return key!.currentState!
         .popAndPushNamed(routeName, result: result, arguments: arguments);
   }
@@ -103,9 +106,10 @@ class WRouter {
     String routeName, {
     TO? result,
     Object? arguments,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     return key!.currentState!
         .pushReplacementNamed(routeName, result: result, arguments: arguments);
   }
@@ -113,9 +117,10 @@ class WRouter {
   /// Calls [pop] repeatedly until the predicate returns true.
   static void popUntil(
     bool Function(Route<dynamic>) predicate, {
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     key!.currentState!.popUntil(predicate);
   }
 
@@ -126,9 +131,10 @@ class WRouter {
     String newRouteName,
     bool Function(Route<dynamic>) predicate, {
     Object? arguments,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
-    final key = keyLabel != null ? _nestedKeys[keyLabel] : navigatorKey;
+    final key =
+        nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
     return key!.currentState!
         .pushNamedAndRemoveUntil(newRouteName, predicate, arguments: arguments);
   }
@@ -139,10 +145,10 @@ class WRouter {
       pushNamedAndRemoveAll<T extends Object?, TO extends Object?>(
     String routeName, {
     Object? arguments,
-    String? keyLabel,
+    String? nestedKeyLabel,
   }) {
     return pushNamedAndRemoveUntil(routeName, (route) => false,
-        arguments: arguments, keyLabel: keyLabel);
+        arguments: arguments, nestedKeyLabel: nestedKeyLabel);
   }
 
   /// Generate material page route.
