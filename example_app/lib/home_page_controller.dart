@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class HomePageController {
-  HomePageController() {
-    counter.value++;
-  }
+  String? currentRouteName;
 
   final counter = ValueNotifier(0);
 
