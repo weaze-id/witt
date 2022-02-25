@@ -4,9 +4,16 @@ Simple state management powered by ValueNotifier with depedency injection.
 
 ## Features
 
-1. State management
-2. Depedency Injection
-3. Route management
+- State management
+  - Value notifier listener
+  - Multiple value notifer listener
+- Depedency Injection
+  - Singleton
+  - Lazy singleton
+  - Lifetime scope
+- Route management
+  - Route
+  - Nested route
 
 ## Getting started
 

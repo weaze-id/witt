@@ -22,6 +22,11 @@ class WRouter {
     return _nestedKeys[label]!;
   }
 
+  /// Remove nested key.
+  static void removeNestedKey(String label) {
+    _nestedKeys.remove(label);
+  }
+
   /// Push the given route onto the navigator.
   static Future<T?> push<T extends Object?>(Route<T> route) {
     return navigatorKey.currentState!.push(route);

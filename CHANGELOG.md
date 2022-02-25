@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Change API name
+- Add WNestedNavigator
+- Add nested key to WRouter
+
 ## 0.2.0
 
 - Fix popUntilAndPushNamed

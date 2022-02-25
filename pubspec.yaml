@@ -1,6 +1,6 @@
 name: witt
 description: Simple state management powered by ValueNotifier with depedency injection.
-version: 0.2.0
+version: 0.3.0
 repository: https://github.com/edsulaiman/witt
 
 environment:
