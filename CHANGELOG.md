@@ -1,3 +1,8 @@
+## 0.4.0
+
+- WDisposable initialize now called after first frame was rendered
+- WPage serviceBuilder now have arguments parameter
+
 ## 0.3.0
 
 - Change API name
