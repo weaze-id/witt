@@ -9,7 +9,7 @@ class WPage {
   final String? title;
 
   /// Register service.
-  final void Function(BuildContext context)? serviceBuilder;
+  final void Function(BuildContext context, dynamic arguments)? serviceBuilder;
 
   /// Builds the primary contents of the route.
   final Widget Function(BuildContext context, dynamic arguments) builder;

@@ -161,7 +161,8 @@ class WRouter {
         return MaterialPageRoute(
           builder: (context) => page.serviceBuilder != null
               ? WServiceBuilder(
-                  serviceBuilder: page.serviceBuilder!,
+                  serviceBuilder: (context) =>
+                      page.serviceBuilder!.call(context, settings.arguments),
                   child: page.builder(context, settings.arguments),
                 )
               : page.builder(context, settings.arguments),
@@ -183,7 +184,8 @@ class WRouter {
         return CupertinoPageRoute(
           builder: (context) => page.serviceBuilder != null
               ? WServiceBuilder(
-                  serviceBuilder: page.serviceBuilder!,
+                  serviceBuilder: (context) =>
+                      page.serviceBuilder!.call(context, settings.arguments),
                   child: page.builder(context, settings.arguments),
                 )
               : page.builder(context, settings.arguments),
