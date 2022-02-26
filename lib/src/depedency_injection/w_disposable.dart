@@ -1,6 +1,8 @@
 abstract class WDisposable {
   WDisposable() {
-    initialize();
+    Future.delayed(Duration.zero, () {
+      initialize();
+    });
   }
 
   void initialize() {}
