@@ -10,6 +10,10 @@ extension ValueNotifierListExtensions<T> on ValueNotifier<List<T>> {
     value = [...value, ...items];
   }
 
+  void replaceAll(Iterable<T> items) {
+    value = [...items];
+  }
+
   void clear() {
     value = [];
   }
@@ -21,6 +25,29 @@ extension ValueNotifierListExtensions<T> on ValueNotifier<List<T>> {
     value = newValue;
   }
 
+  void updateAt(int index, T Function(T) newItem) {
+    final newValue = [...value];
+    newValue[index] = newItem(newValue[index]);
+
+    value = newValue;
+  }
+
+  int indexWhere(bool Function(T) test, [int start = 0]) {
+    return value.indexWhere(test, start);
+  }
+
+  Iterable<N> map<N>(N Function(T) toElement) {
+    return value.map<N>(toElement);
+  }
+
+  Iterable<T> where(bool Function(T) test) {
+    return value.where(test);
+  }
+
+  bool contains(Object? element) {
+    return value.contains(element);
+  }
+
   T get first => value.first;
 
   T? get firstOrNull => value.firstOrNull;
@@ -28,4 +55,6 @@ extension ValueNotifierListExtensions<T> on ValueNotifier<List<T>> {
   T get last => value.last;
 
   T? get lastOrNull => value.lastOrNull;
+
+  int get length => value.length;
 }

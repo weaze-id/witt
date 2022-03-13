@@ -96,6 +96,7 @@ class WService {
 
       if (serviceIndex != -1) {
         final registeredService = scope.services[serviceIndex];
+
         // If registered service is lazy and hasn't been initialize yet.
         if (registeredService.instance == null && registeredService.isLazy) {
           final service = registeredService.factoryFunction();
@@ -105,7 +106,7 @@ class WService {
           _log(T, _LogType.created);
         }
 
-        return scope.services[serviceIndex].instance as T;
+        return registeredService.instance as T;
       }
     }
 
@@ -122,10 +123,9 @@ class WService {
     /// Get last scope and check if service already registered.
     final lastScope = _scopes.last;
     final isRegisteredOnLastScope =
-        lastScope.services.where((e) => e.instanceType == T).firstOrNull !=
-            null;
+        lastScope.services.where((e) => e.instanceType == T).firstOrNull;
 
-    if (isRegisteredOnLastScope) {
+    if (isRegisteredOnLastScope != null) {
       throw Exception(
           "$T is already registered, Only one $T can be registered per scope");
     }
@@ -166,18 +166,21 @@ class WService {
 
     late final int scopeIndex;
     late final _Scope scopes;
+
     if (scopeName != null) {
+      // Scan _scopes from end to start, and compare the name.
       for (int i = _scopes.length - 1; i >= 0; i--) {
-        final scope = _scopes[i];
-        if (scope.name == scopeName) {
+        if (_scopes[i].name == scopeName) {
           scopeIndex = i;
           scopes = _scopes[i];
         }
       }
     } else {
+      // If scopeName is null, assign last scope.
       scopes = _scopes.last;
     }
 
+    // Get all service on this scopes, and call dispose().
     for (final service in scopes.services) {
       if (service.instance != null && service.instance is WDisposable) {
         (service.instance as WDisposable).dispose();
@@ -186,6 +189,7 @@ class WService {
       _log(service.instanceType, _LogType.disposed);
     }
 
+    /// Finally remove scope at scopeIndex, or remove last scope.
     if (scopeName != null) {
       _scopes.removeAt(scopeIndex);
       return;

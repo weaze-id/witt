@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                   WPage(
                     path: "/page-3",
                     builder: (context, arguments) =>
-                        const ContentPage(pageName: "Page 3"),
+                        const ListPage(pageName: "Page 3"),
                   ),
                 ],
               ),
@@ -95,6 +95,40 @@ class ContentPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: homePageC.incrementCounter,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class ListPage extends StatelessWidget {
+  const ListPage({
+    Key? key,
+    required this.pageName,
+  }) : super(key: key);
+
+  final String pageName;
+
+  @override
+  Widget build(BuildContext context) {
+    final homePageC = WService.get<HomePageController>();
+    return Scaffold(
+      appBar: AppBar(title: Text(pageName)),
+      body: WListener(
+        notifier: homePageC.list,
+        builder: (context) => ListView.builder(
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(homePageC.list.value[index].toString()),
+              onTap: () =>
+                  homePageC.list.updateAt(index, (oldItem) => oldItem + 1),
+            );
+          },
+          itemCount: homePageC.list.value.length,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: homePageC.addItem,
         child: const Icon(Icons.add),
       ),
     );
