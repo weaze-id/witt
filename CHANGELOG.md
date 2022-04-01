@@ -1,3 +1,8 @@
+## 0.5.0
+
+- Add `preventDuplicate` property to `addSingleton` and `addLazySingleton`
+- Add more value notifier list extension method
+
 ## 0.4.0
 
 - WDisposable initialize now called after first frame was rendered

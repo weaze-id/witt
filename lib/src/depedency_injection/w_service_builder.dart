@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
-import 'w_service.dart';
+import 'w_service/w_service.dart';
 
 /// Automatically push and pop [GetIt] scope.
 class WServiceBuilder extends StatefulWidget {

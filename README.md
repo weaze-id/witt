@@ -53,14 +53,14 @@ Listen to value change by using `WListener` or `WMultiListener`
 
 ```dart
 WListener(
-  notifier: CounterController.counter,
-  builder: (context) => Text(CounterController.counter.value.toString()),
+  notifier: ,
+  builder: (context) => Text(counter.value.toString()),
 );
 
 // or
 WMultiListener(
   notifiers: [CounterController.counter],
-  builder: (context) => Text(CounterController.counter.value.toString()),
+  builder: (context) => Text(counter.value.toString()),
 );
 ```
 
@@ -171,7 +171,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// Or you can register your business logic using `WServiceBuilder`
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -180,12 +179,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Example App",
-      home: WServiceBuilder(
-        serviceBuilder: (context) {
-          WService.addSingleton(() => CounterController());
-        },
-        child: const HomePage(),
-      ),
+      home: const HomePage(),
     );
   }
 }
