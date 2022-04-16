@@ -75,14 +75,14 @@ class WRouter {
     return key!.currentState!.pushNamed(routeName, arguments: arguments);
   }
 
-  /// Push the given route onto the navigator.
+  /// Pop the top-most route off the navigator.
   static void pop<T extends Object?>({
     T? result,
     String? nestedKeyLabel,
   }) {
     final key =
         nestedKeyLabel != null ? _nestedKeys[nestedKeyLabel] : navigatorKey;
-    key!.currentState!.pop();
+    key!.currentState!.pop(result);
   }
 
   /// Pop the current route off the navigator and push a named route in its

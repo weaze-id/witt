@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Fix router pop method
+
 ## 0.5.0
 
 - Add `preventDuplicate` property to `addSingleton` and `addLazySingleton`
