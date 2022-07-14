@@ -57,4 +57,8 @@ extension ValueNotifierListExtensions<T> on ValueNotifier<List<T>> {
   T? get lastOrNull => value.lastOrNull;
 
   int get length => value.length;
+
+  bool get isEmpty => value.isEmpty;
+
+  bool get isNotEmpty => value.isNotEmpty;
 }

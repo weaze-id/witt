@@ -5,7 +5,6 @@ class WListener extends StatefulWidget {
   const WListener({
     Key? key,
     required this.notifier,
-    this.conditions,
     required this.builder,
   }) : super(key: key);
 
@@ -14,10 +13,6 @@ class WListener extends StatefulWidget {
   /// It can be a [ChangeNotifier], [ValueNotifier] or any other
   /// class that implements [Listenable]
   final Listenable notifier;
-
-  /// If true and when notifier is notified, the widget will be rebuilt.
-  /// `true` will be used if null.
-  final bool Function()? conditions;
 
   final Widget Function(BuildContext context) builder;
 
@@ -48,9 +43,7 @@ class _WListenerState<T> extends State<WListener> {
   }
 
   void _onValueChanged() {
-    if (widget.conditions?.call() ?? true) {
-      setState(() {});
-    }
+    setState(() {});
   }
 
   @override
