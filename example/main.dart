@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get CounterController instance from depedency injection.
+    // Get CounterController instance from service locator.
     final counterC = WService.get<CounterController>();
     return Scaffold(
       appBar: AppBar(title: const Text("Counter App")),

@@ -95,6 +95,32 @@ return [
 });
 ```
 
+## Important note
+
+Widget will not be re-rendered if `WListener` return `const` widget.
+
+```dart
+WListener(
+  notifier: counterC.counter,
+  (context, value) => const _CounterText(),
+);
+
+...
+
+// This widget will not be re-rendered.
+class _CounterText extends StatelessWidget {
+  const _CounterText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final counterC = WService.get<CounterController>();
+    final counterValue = counterC.counter.value;
+
+    return Center(child: Text(counterValue.toString()));
+  }
+}
+```
+
 ## Motivation
 
 The main idea of ​​this library being created is to manage state, dependency injection and routes in one library without bloated features.

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../depedency_injection/w_service_builder.dart';
+import '../service_locator/w_service_builder.dart';
 import 'w_page.dart';
 
 /// Manipulate route without using [BuildContext],

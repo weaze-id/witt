@@ -1,6 +1,6 @@
 name: witt
-description: Simple state management powered by ValueNotifier with depedency injection.
-version: 0.5.1
+description: Simple state management powered by ValueNotifier with service locator.
+version: 0.6.0
 repository: https://github.com/edsulaiman/witt
 
 environment:
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  collection: ^1.15.0
 
 dev_dependencies:
   flutter_test:
