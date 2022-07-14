@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 
-import 'models/service.dart';
 import 'service_logger.dart';
+import 'service_model.dart';
 import 'service_scope_manager.dart';
 
 class ServiceManager {
@@ -16,16 +16,6 @@ class ServiceManager {
           scope.services.indexWhere((e) => e.instanceType == T);
 
       if (serviceIndex != -1) {
-        // If registered service is lazy and hasn't been initialize yet.
-        if (scope.services[serviceIndex].instance == null &&
-            scope.services[serviceIndex].isLazy) {
-          final service = scope.services[serviceIndex].factoryFunction();
-          scope.services[serviceIndex] =
-              scope.services[serviceIndex].copyWith(instance: service);
-
-          ServiceLogger.log(T, LogType.created);
-        }
-
         return scope.services[serviceIndex].instance as T;
       }
     }
@@ -36,7 +26,6 @@ class ServiceManager {
   /// Register a service to ServiceScopeManager.scopes.
   static void register<T extends Object>({
     required T Function() factoryFunction,
-    required bool isLazy,
     required bool preventDuplicate,
   }) {
     ServiceScopeManager.initializeScope();
@@ -48,41 +37,27 @@ class ServiceManager {
         lastScope.services.where((e) => e.instanceType == T).firstOrNull;
     if (isRegisteredOnLastScope != null) {
       throw Exception(
-          "$T is already registered, Only one $T can be registered per scope");
+        "$T is already registered, Only one $T can be registered per scope",
+      );
     }
 
     // Throw exception if service already registered on previous scope
     // with `preventDuplicate` true.
-    if (ServiceScopeManager.uniqueService.contains(T)) {
-      throw Exception("$T is already registered on oldest scope");
-    }
-
-    ServiceLogger.log(T, LogType.registered);
-
-    // Add this service type to `ServiceScopeManager.uniqueService` if
-    // preventDuplicate is true.
-    if (preventDuplicate) {
-      ServiceScopeManager.uniqueService.add(T);
-    }
-
-    if (isLazy) {
-      lastScope.services.add(Service(
-        instance: null,
-        instanceType: T,
-        factoryFunction: factoryFunction,
-        isLazy: isLazy,
-      ));
-
-      return;
+    for (final scope in ServiceScopeManager.scopes) {
+      final services = scope.services;
+      for (final service in services) {
+        if (service.preventDuplicate && service.instanceType == T) {
+          throw Exception("$T is already registered on oldest scope");
+        }
+      }
     }
 
     ServiceLogger.log(T, LogType.created);
 
-    lastScope.services.add(Service(
+    lastScope.services.add(ServiceModel(
       instance: factoryFunction(),
       instanceType: T,
-      factoryFunction: factoryFunction,
-      isLazy: isLazy,
+      preventDuplicate: preventDuplicate,
     ));
   }
 }

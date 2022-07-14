@@ -2,7 +2,7 @@ import 'dart:developer' as dev;
 
 import '../../../witt.dart';
 
-enum LogType { created, disposed, registered }
+enum LogType { created, disposed }
 
 class ServiceLogger {
   static void log(Type instanceType, LogType logType) {
@@ -16,9 +16,6 @@ class ServiceLogger {
         break;
       case LogType.disposed:
         dev.log("Disposing $instanceType.", name: "WService");
-        break;
-      case LogType.registered:
-        dev.log("Registering $instanceType.", name: "WService");
         break;
       default:
     }

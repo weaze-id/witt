@@ -19,9 +19,10 @@ class WService {
     final registeredService = ServiceManager.findService<T>();
     if (registeredService == null) {
       throw Exception(
-          "$T is not registered, Make sure you have register the $T by calling "
-          "WService.addSingleton(() => $T()) or "
-          "WService.addLazySingleton(() => $T())");
+        "$T is not registered, Make sure you have register the $T by calling "
+        "WService.addSingleton(() => $T()) or "
+        "WService.addLazySingleton(() => $T())",
+      );
     }
 
     return registeredService;
@@ -35,24 +36,10 @@ class WService {
   /// Register a singleton service.
   static void addSingleton<T extends Object>(
     T Function() factoryFunction, {
-    bool preventDuplicate = false,
+    bool preventDuplicate = true,
   }) {
     ServiceManager.register(
       factoryFunction: factoryFunction,
-      isLazy: false,
-      preventDuplicate: preventDuplicate,
-    );
-  }
-
-  /// Register a lazy singleton service, the service will be initialize when
-  /// [get] or [isRegistered] called.
-  static void addLazySingleton<T extends Object>(
-    T Function() factoryFunction, {
-    bool preventDuplicate = false,
-  }) {
-    ServiceManager.register(
-      factoryFunction: factoryFunction,
-      isLazy: true,
       preventDuplicate: preventDuplicate,
     );
   }

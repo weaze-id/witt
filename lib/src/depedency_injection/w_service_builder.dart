@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import 'w_service/w_service.dart';
 
-/// Automatically push and pop [GetIt] scope.
+/// Automatically push and pop scope.
 class WServiceBuilder extends StatefulWidget {
   const WServiceBuilder({
     Key? key,
@@ -55,7 +55,8 @@ class _WServiceBuilderState extends State<WServiceBuilder> {
   String _generateScopeName() {
     var r = Random();
     return String.fromCharCodes(
-        List.generate(5, (index) => r.nextInt(33) + 89));
+      List.generate(5, (index) => r.nextInt(33) + 89),
+    );
   }
 
   @override

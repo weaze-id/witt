@@ -1,10 +1,9 @@
 import '../w_disposable.dart';
-import 'models/service_scope.dart';
 import 'service_logger.dart';
+import 'service_scope_model.dart';
 
 class ServiceScopeManager {
-  static final scopes = <ServiceScope>[];
-  static final uniqueService = <Type>[];
+  static final scopes = <ServiceScopeModel>[];
 
   /// Push new scope if empty.
   static void initializeScope() {
@@ -15,7 +14,7 @@ class ServiceScopeManager {
 
   /// Push a new scope.
   static void pushScope({String? scopeName}) {
-    scopes.add(ServiceScope(name: scopeName, services: []));
+    scopes.add(ServiceScopeModel(name: scopeName, services: []));
   }
 
   /// Pop scope.
@@ -25,7 +24,7 @@ class ServiceScopeManager {
     }
 
     late final int scopeIndex;
-    late final ServiceScope scope;
+    late final ServiceScopeModel scope;
 
     if (scopeName != null) {
       // Scan _scopes from end to start, and compare the name.
@@ -42,12 +41,6 @@ class ServiceScopeManager {
 
     // Get all service on this scopes.
     for (final service in scope.services) {
-      // Remove service from `uniqueService` if is registered with
-      // `preventDuplicate` true.
-      if (uniqueService.contains(service.instanceType)) {
-        uniqueService.removeWhere((e) => e == service.instanceType);
-      }
-
       // Call `dispose()` if service is implements `WDisposable`.
       if (service.instance != null && service.instance is WDisposable) {
         (service.instance as WDisposable).dispose();
@@ -56,12 +49,13 @@ class ServiceScopeManager {
       ServiceLogger.log(service.instanceType, LogType.disposed);
     }
 
-    // Finally remove scope at scopeIndex, or remove last scope.
+    // Finally remove scope at scopeIndex.
     if (scopeName != null) {
       scopes.removeAt(scopeIndex);
       return;
     }
 
+    // or remove last scope.
     scopes.removeLast();
   }
 }
