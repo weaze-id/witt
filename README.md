@@ -1,19 +1,6 @@
 # Witt
 
-Simple state management powered by ValueNotifier with depedency injection.
-
-## Features
-
-- State management
-  - Value notifier listener
-  - Multiple value notifer listener
-- Depedency Injection
-  - Singleton
-  - Lazy singleton
-  - Lifetime scope
-- Route management
-  - Route
-  - Nested route
+Simple state management powered by ValueNotifier with service locator.
 
 ## Getting started
 
@@ -32,14 +19,9 @@ import 'package:witt/witt.dart
 
 ## Usage
 
-### State management
-
-Create a class that extends ValueNotifier or create a final ValueNotifier variable
+### Basic usage
 
 ```dart
-final counter = ValueNotifier(0);
-
-// or
 class CounterController {
   final counter = ValueNotifier(0);
 
@@ -47,171 +29,70 @@ class CounterController {
     counter.value++;
   }
 }
-```
 
-Listen to value change by using `WListener` or `WMultiListener`
-
-```dart
-WListener(
-  notifier: ,
-  builder: (context) => Text(counter.value.toString()),
-);
-
-// or
-WMultiListener(
-  notifiers: [CounterController.counter],
-  builder: (context) => Text(counter.value.toString()),
-);
-```
-
-### Depedency injection
-
-Register an object to depedency injection
-
-```dart
+// Register your service.
 WService.addSingleton(() => CounterController());
-```
 
-Get a registered object
-
-```dart
+// In your widget.
 final counterC = WService.get<CounterController>();
-```
-
-### Depedency injection scope
-
-By wrapping page/widget using `WServiceBuilder`, your object will be automatically registered/unregistered when the page/widget appear/disappear from the widget tree by managing depedency injection scope for you.
-
-```dart
-WServiceBuilder(
-  serviceBuilder: () {},
-  child: HomePage(),
+return Scaffold(
+    ...
+    body: WListener(
+      notifier: counterC.counter,
+      builder: (context) => Text(counterC.counter.value.toString()),
+    ),
 );
 ```
 
-Register the object on `serviceBuilder` property
+### Routing
 
 ```dart
-WServiceBuilder(
-  serviceBuilder: () {
-    WService.addSingleton(() => CounterController());
-  },
-  child: HomePage(),
-);
-```
-
-Or you can manage the scope by your self
-
-Pushing new scope
-
-```dart
-WService.pushScope();
-
-// or
-WService.pushScope(scopeName: "My scope");
-```
-
-Popping scope
-
-```dart
-WService.popScope();
-
-// or
-WService.popScope(scopeName: "My scope");
-```
-
-When you are trying to get the registered object, Witt will find the object from newest scope, so older object will be shadowed.
-
-### Route management
-
-Register `WRouter.navigatorKey` on `MaterialApp` or `CupertinoApp`
-
-```dart
+// Set `navigatorKey` with`WRouter.navigatorKey` and set onGenerateRoute.
 return MaterialApp(
   navigatorKey: WRouter.navigatorKey,
-  title: "My Awesome App",
-  home: const HomePage(),
-);
-```
-
-Navigate
-
-```dart
-WRouter.pushMaterialPage(
-  builder: (context) => WServiceBuilder(
-    serviceBuilder: (context) {},
-    child: const SecondPage(),
+  onGenerateRoute: (settings) => WRouter.onGenerateMaterialRoute(
+    settings: settings,
+    pages: [
+      WPage(
+        path: "/",
+        builder: (context, args) => HomePage(args: args),
+        serviceBuilder: (context, args) {
+          WService.addSingleton(() => Service1());
+          WService.addSingleton(() => Service2());
+        }
+      )
+    ],
   ),
 );
 
-// or using named route
-WRouter.pushNamed("/second-page");
+// Push page
+WRouter.pushNamed("/");
 ```
 
-## Counter app with Witt
-
-1. Create your business logic class
+### Listen to `ValueNotifier` using extensions
 
 ```dart
-class CounterController {
-    final counter = ValueNotifier(0);
+// Listen to single `ValueNotifer`
+return counterC.counter.builder(
+    (context, value) => Text(value.toString()),
+);
 
-    void incrementCounter() {
-        counter.value++;
-    }
-}
-```
+// Listen to multiple `ValueNotifer`
+return [
+    counterC.counter,
+    counterC.counter2,
+    counterC.counter3,
+].builder((context) {
+    value = counterC.counter.value;
+    value2 = counterC.counter2.value;
+    value3 = counterC.counter3.value;
 
-2. Register your business logic class to depedency injection
-
-```dart
-// Register your business logic before runApp function.
-void main() {
-  WService.addSingleton(() => HomePageController());
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Example App",
-      home: const HomePage(),
-    );
-  }
-}
-```
-
-3. Create your view
-
-```dart
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Get CounterController instance from depedency injection.
-    final counterC = WService.get<CounterController>();
-    return Scaffold(
-      appBar: AppBar(title: const Text("Counter App")),
-      body: Center(
-        // Listen to ValueNotifier.
-        child: WListener(
-          notifier: counterC.counter,
-          builder: (context) => Text(counterC.counter.value.toString()),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // Increment the counter.
-        onPressed: counterC.incrementCounter,
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
+    return Column(children: [
+        Text(value.toString()),
+        Text(value2.toString()),
+        Text(value3.toString()),
+    ]);
+});
 ```
 
 ## Motivation

@@ -1,3 +1,34 @@
+## 0.6.0
+
+- Add value notifer extension
+
+```dart
+// Now you can listen to `ValueNotifer` using extension
+return counterC.counter.builder(
+    (context, value) => Text(value.toString()),
+);
+
+// Listen to multiple `ValueNotifer`
+return [
+    counterC.counter,
+    counterC.counter2,
+    counterC.counter3,
+].builder((context) {
+    value = counterC.counter.value;
+    value2 = counterC.counter2.value;
+    value3 = counterC.counter3.value;
+
+    return Column(children: [
+        Text(value.toString()),
+        Text(value2.toString()),
+        Text(value3.toString()),
+    ]);
+});
+```
+
+- Remove `addLazySingleton`
+- Set `preventDuplicate` default value to `true`
+
 ## 0.5.1
 
 - Fix router pop method
