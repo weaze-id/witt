@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 
-extension ValueNotifierListExtensions<T> on ValueNotifier<List<T>> {
+extension ListExtensions<T> on ValueNotifier<List<T>> {
   void add(T item) {
     value = [...value, item];
   }
