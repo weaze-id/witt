@@ -1,3 +1,8 @@
+## 0.7.0
+
+- Use uuid for default scope name
+- Change WServiceBuilder API
+
 ## 0.6.0
 
 - Add value notifer extension

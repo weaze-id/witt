@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         serviceBuilder: (context) {
           WService.addSingleton(() => CounterController());
         },
-        child: const HomePage(),
+        builder: (context) => const HomePage(),
       ),
     );
   }

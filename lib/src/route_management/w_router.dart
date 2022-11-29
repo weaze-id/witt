@@ -163,7 +163,8 @@ class WRouter {
               ? WServiceBuilder(
                   serviceBuilder: (context) =>
                       page.serviceBuilder!.call(context, settings.arguments),
-                  child: page.builder(context, settings.arguments),
+                  builder: (context) =>
+                      page.builder(context, settings.arguments),
                 )
               : page.builder(context, settings.arguments),
           settings: settings,
@@ -186,7 +187,8 @@ class WRouter {
               ? WServiceBuilder(
                   serviceBuilder: (context) =>
                       page.serviceBuilder!.call(context, settings.arguments),
-                  child: page.builder(context, settings.arguments),
+                  builder: (context) =>
+                      page.builder(context, settings.arguments),
                 )
               : page.builder(context, settings.arguments),
           settings: settings,
