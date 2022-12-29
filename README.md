@@ -1,6 +1,6 @@
 # Witt
 
-Simple state management powered by ValueNotifier with service locator.
+Simple state management powered by ValueNotifier and InheritedWidget.
 
 ## Getting started
 
@@ -30,18 +30,26 @@ class CounterController {
   }
 }
 
-// Register your service.
-WService.addSingleton(() => CounterController());
-
-// In your widget.
-final counterC = WService.get<CounterController>();
-return Scaffold(
-    ...
-    body: WListener(
-      notifier: counterC.counter,
-      builder: (context) => Text(counterC.counter.value.toString()),
-    ),
-);
+WProvider.builder(
+  service: () => CounterController(),
+  builder: (context) {
+    final counterC = WServicWProvidere.of<CounterController>(context);
+    return Scaffold(
+        ...
+        body: WListener(
+          notifier: counterC.counter,
+          builder: (context) {
+            final counter = counterC.counter.value;
+            return Text(counter.toString());
+          },
+        ),
+        floationActionButton: FloationActionButton(
+          onPressed: counterC.incrementCounter,
+          child: const Icon(Icons.add),
+        ),
+    );
+  },
+)
 ```
 
 ### Routing
@@ -50,15 +58,17 @@ return Scaffold(
 // Set `navigatorKey` with`WRouter.navigatorKey` and set onGenerateRoute.
 return MaterialApp(
   navigatorKey: WRouter.navigatorKey,
-  onGenerateRoute: (settings) => WRouter.onGenerateMaterialRoute(
+  onGenerateRoute: (settings) => WRouter.onGenerateRoute(
     settings: settings,
     pages: [
       WPage(
         path: "/",
         builder: (context, args) => HomePage(args: args),
-        serviceBuilder: (context, args) {
-          WService.addSingleton(() => Service1());
-          WService.addSingleton(() => Service2());
+        providerBuilder: (context, args) {
+          return [
+            WProvider(service: () => Service1()),
+            WProvider(service: () => Service2()),
+          ];
         }
       )
     ],
@@ -67,32 +77,6 @@ return MaterialApp(
 
 // Push page
 WRouter.pushNamed("/");
-```
-
-### Listen to `ValueNotifier` using extensions
-
-```dart
-// Listen to single `ValueNotifer`
-return counterC.counter.builder(
-    (context, value) => Text(value.toString()),
-);
-
-// Listen to multiple `ValueNotifer`
-return [
-    counterC.counter,
-    counterC.counter2,
-    counterC.counter3,
-].builder((context) {
-    value = counterC.counter.value;
-    value2 = counterC.counter2.value;
-    value3 = counterC.counter3.value;
-
-    return Column(children: [
-        Text(value.toString()),
-        Text(value2.toString()),
-        Text(value3.toString()),
-    ]);
-});
 ```
 
 ## Important note
@@ -120,10 +104,6 @@ class _CounterText extends StatelessWidget {
   }
 }
 ```
-
-## Motivation
-
-The main idea of ​​this library being created is to manage state, dependency injection and routes in one library without bloated features.
 
 ## Additional Information
 

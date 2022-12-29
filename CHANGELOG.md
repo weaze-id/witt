@@ -1,3 +1,12 @@
+## 1.0.0
+
+- Remove service locator
+- Add inherited widget wrapper (WProvider, WMultiProvider)
+- Remove onGenerateMaterialRoute and onGenerateCupertinoRoute
+- Add onGenerateRoute
+- Change WPage property
+- Remove value notifier extensions
+
 ## 0.7.0
 
 - Use uuid for default scope name

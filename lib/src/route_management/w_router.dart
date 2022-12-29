@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../service_locator/w_service_builder.dart';
-import 'w_page.dart';
+import '../../witt.dart';
 
 /// Manipulate route without using [BuildContext],
 /// [navigatorKey] must be registered at [MaterialApp].
@@ -152,43 +151,23 @@ class WRouter {
   }
 
   /// Generate material page route.
-  static Route<dynamic>? onGenerateMaterialRoute({
+  static Route<dynamic>? onGenerateRoute({
     required RouteSettings settings,
     required List<WPage> pages,
   }) {
     for (final page in pages) {
       if (settings.name == page.path) {
         return MaterialPageRoute(
-          builder: (context) => page.serviceBuilder != null
-              ? WServiceBuilder(
-                  serviceBuilder: (context) =>
-                      page.serviceBuilder!.call(context, settings.arguments),
-                  builder: (context) =>
-                      page.builder(context, settings.arguments),
-                )
-              : page.builder(context, settings.arguments),
-          settings: settings,
-        );
-      }
-    }
-
-    return null;
-  }
-
-  /// Generate cupertino page route.
-  static Route<dynamic>? onGenerateCupertinoRoute({
-    required RouteSettings settings,
-    required List<WPage> pages,
-  }) {
-    for (final page in pages) {
-      if (settings.name == page.path) {
-        return CupertinoPageRoute(
-          builder: (context) => page.serviceBuilder != null
-              ? WServiceBuilder(
-                  serviceBuilder: (context) =>
-                      page.serviceBuilder!.call(context, settings.arguments),
-                  builder: (context) =>
-                      page.builder(context, settings.arguments),
+          builder: (context) => page.providerBuilder != null
+              ? WMultiProvider.builder(
+                  providers: page.providerBuilder!.call(
+                    context,
+                    settings.arguments,
+                  ),
+                  builder: (context) => page.builder(
+                    context,
+                    settings.arguments,
+                  ),
                 )
               : page.builder(context, settings.arguments),
           settings: settings,

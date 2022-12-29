@@ -11,14 +11,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "Example App",
-      home: WServiceBuilder(
-        serviceBuilder: (context) {
-          WService.addSingleton(() => CounterController());
-        },
-        builder: (context) => const HomePage(),
-      ),
+      home: HomePage(),
     );
   }
 }
@@ -36,21 +31,27 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get CounterController instance from service locator.
-    final counterC = WService.get<CounterController>();
     return Scaffold(
       appBar: AppBar(title: const Text("Counter App")),
-      body: Center(
-        // Listen to ValueNotifier.
-        child: WListener(
-          notifier: counterC.counter,
-          builder: (context) => Text(counterC.counter.value.toString()),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // Increment the counter.
-        onPressed: counterC.incrementCounter,
-        child: const Icon(Icons.add),
+      body: WMultiProvider.builder(
+        providers: [
+          WProvider(service: () => CounterController()),
+        ],
+        builder: (context) {
+          final counterC = WProvider.of<CounterController>(context);
+          return WListener(
+            notifier: counterC.counter,
+            builder: (context) => Column(
+              children: [
+                Text(counterC.counter.value.toString()),
+                ElevatedButton(
+                  onPressed: counterC.incrementCounter,
+                  child: const Text("Increment"),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

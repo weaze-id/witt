@@ -1,6 +1,6 @@
 name: witt
 description: Simple state management powered by ValueNotifier with service locator.
-version: 0.7.0
+version: 1.0.0
 repository: https://github.com/weaze-id/witt
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   collection: ^1.16.0
   flutter:
     sdk: flutter
-  uuid: ^3.0.7
+  nested: ^1.0.0
 
 dev_dependencies:
   flutter_test:
