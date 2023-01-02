@@ -1,6 +1,6 @@
 name: witt
 description: Simple state management powered by ValueNotifier with service locator.
-version: 1.0.0
+version: 1.1.0
 repository: https://github.com/weaze-id/witt
 
 environment:

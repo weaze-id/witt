@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Add BuildContext to service property on WProvider
+
 ## 1.0.0
 
 - Remove service locator

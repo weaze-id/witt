@@ -11,7 +11,7 @@ class WProviderBase<T extends Object> extends StatefulWidget {
     required this.child,
   }) : super(key: key);
 
-  final T Function() service;
+  final T Function(BuildContext context) service;
   final Widget child;
 
   static T of<T extends Object>(BuildContext context) {
@@ -27,7 +27,7 @@ class _WProviderBaseState<T extends Object> extends State<WProviderBase<T>> {
 
   @override
   void initState() {
-    value = widget.service.call();
+    value = widget.service.call(context);
     log("Initializing $T", name: "Witt");
 
     super.initState();

@@ -10,14 +10,14 @@ class WProvider<T extends Object> extends SingleChildStatelessWidget {
     required this.service,
   }) : super(key: key, child: child);
 
-  final T Function() service;
+  final T Function(BuildContext context) service;
 
   static T of<T extends Object>(BuildContext context) {
     return WProviderBase.of<T>(context);
   }
 
   static WProvider<T> builder<T extends Object>({
-    required T Function() service,
+    required T Function(BuildContext context) service,
     required Widget Function(BuildContext context) builder,
   }) {
     return WProvider(

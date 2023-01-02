@@ -33,7 +33,7 @@ class CounterController {
 WProvider.builder(
   service: () => CounterController(),
   builder: (context) {
-    final counterC = WServicWProvidere.of<CounterController>(context);
+    final counterC = WProvider.of<CounterController>(context);
     return Scaffold(
         ...
         body: WListener(

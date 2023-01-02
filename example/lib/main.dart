@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: const Text("Counter App")),
       body: WMultiProvider.builder(
         providers: [
-          WProvider(service: () => CounterController()),
+          WProvider(service: (context) => CounterController()),
         ],
         builder: (context) {
           final counterC = WProvider.of<CounterController>(context);
