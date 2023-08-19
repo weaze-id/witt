@@ -22,7 +22,7 @@ import 'package:witt/witt.dart
 ### Basic usage
 
 ```dart
-class CounterController {
+class CounterProvider {
   final counter = ValueNotifier(0);
 
   void incrementCounter() {
@@ -30,53 +30,38 @@ class CounterController {
   }
 }
 
-WProvider.builder(
-  service: () => CounterController(),
-  builder: (context) {
-    final counterC = WProvider.of<CounterController>(context);
-    return Scaffold(
-        ...
-        body: WListener(
-          notifier: counterC.counter,
-          builder: (context) {
-            final counter = counterC.counter.value;
-            return Text(counter.toString());
-          },
-        ),
-        floationActionButton: FloationActionButton(
-          onPressed: counterC.incrementCounter,
-          child: const Icon(Icons.add),
-        ),
-    );
-  },
-)
-```
-
-### Routing
-
-```dart
-// Set `navigatorKey` with`WRouter.navigatorKey` and set onGenerateRoute.
-return MaterialApp(
-  navigatorKey: WRouter.navigatorKey,
-  onGenerateRoute: (settings) => WRouter.onGenerateRoute(
-    settings: settings,
-    pages: [
-      WPage(
-        path: "/",
-        builder: (context, args) => HomePage(args: args),
-        providerBuilder: (context, args) {
-          return [
-            WProvider(service: () => Service1()),
-            WProvider(service: () => Service2()),
-          ];
-        }
-      )
-    ],
+...
+ return WProvider(
+  create: (context) => CounterProvider(),
+  child: const MaterialApp(
+    title: "Example App",
+    home: HomePage(),
   ),
 );
 
-// Push page
-WRouter.pushNamed("/");
+...
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final counterP = WProvider.of<CounterProvider>(context);
+    return Scaffold(
+      body: WListener(
+        notifier: counterP.counter,
+        builder: (context) {
+          final counter = counterP.counter.value;
+          return Text(counter.toString());
+        },
+      ),
+      floationActionButton: FloationActionButton(
+        onPressed: counterP.incrementCounter,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
 ```
 
 ## Important note
@@ -85,10 +70,9 @@ Widget will not be re-rendered if `WListener` return `const` widget.
 
 ```dart
 WListener(
-  notifier: counterC.counter,
+  notifier: counterP.counter,
   (context, value) => const _CounterText(),
 );
-
 ...
 
 // This widget will not be re-rendered.
@@ -97,8 +81,8 @@ class _CounterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counterC = WService.get<CounterController>();
-    final counterValue = counterC.counter.value;
+    final counterP = WProvider.of<CounterProvider>(context);
+    final counterValue = counterP.counter.value;
 
     return Center(child: Text(counterValue.toString()));
   }

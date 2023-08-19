@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Remove route management
+
 ## 1.1.0
 
 - Add BuildContext to service property on WProvider
