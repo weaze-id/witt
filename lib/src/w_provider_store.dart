@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'w_disposable.dart';
 
-class WProviderBase<T extends Object> extends StatefulWidget {
-  const WProviderBase({
+class WProviderStore<T extends Object> extends StatefulWidget {
+  const WProviderStore({
     Key? key,
     required this.service,
     required this.child,
@@ -19,10 +19,10 @@ class WProviderBase<T extends Object> extends StatefulWidget {
   }
 
   @override
-  State<WProviderBase<T>> createState() => _WProviderBaseState<T>();
+  State<WProviderStore<T>> createState() => _WProviderStoreState<T>();
 }
 
-class _WProviderBaseState<T extends Object> extends State<WProviderBase<T>> {
+class _WProviderStoreState<T extends Object> extends State<WProviderStore<T>> {
   late T value;
 
   @override

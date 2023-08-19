@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 /// Rebuild widget when any of notifiers are notified.
-class WMultiListener extends StatefulWidget {
-  const WMultiListener({
+class WListener extends StatefulWidget {
+  const WListener({
     Key? key,
     required this.notifiers,
     required this.builder,
@@ -18,10 +18,10 @@ class WMultiListener extends StatefulWidget {
   final Widget Function(BuildContext context) builder;
 
   @override
-  State<StatefulWidget> createState() => _WMultiListenerState();
+  State<StatefulWidget> createState() => _WListenerState();
 }
 
-class _WMultiListenerState extends State<WMultiListener> {
+class _WListenerState extends State<WListener> {
   @override
   void initState() {
     for (final value in widget.notifiers) {
@@ -31,7 +31,7 @@ class _WMultiListenerState extends State<WMultiListener> {
   }
 
   @override
-  void didUpdateWidget(WMultiListener oldWidget) {
+  void didUpdateWidget(WListener oldWidget) {
     if (oldWidget.notifiers != widget.notifiers) {
       for (final value in oldWidget.notifiers) {
         value.removeListener(_onValueChanged);
@@ -51,12 +51,12 @@ class _WMultiListenerState extends State<WMultiListener> {
     super.dispose();
   }
 
-  void _onValueChanged() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return widget.builder(context);
+  }
+
+  void _onValueChanged() {
+    setState(() {});
   }
 }
