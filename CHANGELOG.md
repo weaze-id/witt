@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Change SDK version
+
 ## 2.0.0
 
 - Remove route management
