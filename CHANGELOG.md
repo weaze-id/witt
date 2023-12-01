@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Fix pub.dev points
+
 ## 2.0.1
 
 - Change SDK version
