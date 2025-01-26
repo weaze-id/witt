@@ -18,6 +18,10 @@ class WProviderStore<T extends Object> extends StatefulWidget {
     return _GenericInheritedWidget.of<T>(context);
   }
 
+  static T? maybeOf<T extends Object>(BuildContext context) {
+    return _GenericInheritedWidget.maybeOf<T>(context);
+  }
+
   @override
   State<WProviderStore<T>> createState() => _WProviderStoreState<T>();
 }
@@ -67,6 +71,12 @@ class _GenericInheritedWidget<T extends Object> extends InheritedWidget {
     assert(result != null, 'No $T found in context');
 
     return result!.value;
+  }
+
+  static T? maybeOf<T extends Object>(BuildContext context) {
+    final result = context
+        .dependOnInheritedWidgetOfExactType<_GenericInheritedWidget<T>>();
+    return result?.value;
   }
 
   @override

@@ -16,6 +16,10 @@ class WProvider<T extends Object> extends SingleChildStatelessWidget {
     return WProviderStore.of<T>(context);
   }
 
+  static T? maybeOf<T extends Object>(BuildContext context) {
+    return WProviderStore.maybeOf<T>(context);
+  }
+
   static WProvider<T> builder<T extends Object>({
     required T Function(BuildContext context) service,
     required Widget Function(BuildContext context) builder,
