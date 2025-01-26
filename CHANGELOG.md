@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Add `maybeOf` method to `WProvider`
+
 ## 2.0.2
 
 - Fix pub.dev points
